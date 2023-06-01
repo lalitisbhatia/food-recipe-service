@@ -6,13 +6,14 @@
   "scripts": {
     "build": "npx tsc",
     "start": "node server.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q public/server.js\"",
+    "dev": "concurrently  \"npx tsc --watch\" \"env NODE_ENV=dev  nodemon -q public/server.js\"",
+    "dev1": "concurrently  \"npx tsc --watch\" \"nodemon -q public/server.js\"",
     "docker:build": "docker build . -t fr-service && docker rm -f fr-service && docker run -d -it --env-file=.env -p 3300:3300 --name fr-service fr-service && docker network connect local-network fr-service",
     "test": "jest"
   },
   "repository": {
     "type": "git",
-    "url": "food-recipe-service"
+    "url": "food-recipe-service" 
   },
   "keywords": [
     "recipes",
@@ -32,6 +33,7 @@
     "body-parser": "^1.20.2",
     "concurrently": "^8.0.1",
     "cors": "^2.8.5",
+    "dotenv": "^16.1.3",
     "express": "^4.18.2",
     "mongoose": "^7.2.0",
     "nodemon": "^2.0.22",

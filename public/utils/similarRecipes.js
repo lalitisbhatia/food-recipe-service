@@ -133,7 +133,7 @@ const calculateDistance = (p1, p2) => {
 // }
 const getSimilarRecipes = (recipeId) => __awaiter(void 0, void 0, void 0, function* () {
     let recipe = yield recipeModel1.findOne({ id: recipeId });
-    var similarRecipes;
+    var similarRecipes = [];
     // const allRecipes = recipes.recipeData.recipeLookup; //recipeData.recipeLookup;//
     let allRecipes = yield recipeModel1.find();
     // console.log("all recipes count: ",allRecipes.length)

@@ -22,6 +22,4 @@ run the following in order
 
 ## Features to be added
 - Hook up to ci/cd using github actions
-- Add a connection to db 
 - Add deployment using Kubernetes
--

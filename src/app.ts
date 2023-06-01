@@ -2,9 +2,10 @@ import express , { Application,Request,Response,Router } from "express";
 import bodyParser  from "body-parser";
 import cors  from 'cors';
 import mongoose from "mongoose";
-// require("dotenv").config(); 
+require("dotenv").config(); 
 
-
+const env = process.env.NODE_ENV
+let DB_CONN = env==="dev"?process.env.FR_DB_CONNECTION_LOCAL:process.env.FR_DB_CONNECTION
 
 
 class App {
@@ -25,7 +26,7 @@ class App {
         this.app.use(cors())
     }
     private initializeDBConnection = () => {
-        mongoose.connect(`${process.env.FR_DB_CONNECTION}`);
+        mongoose.connect(`${DB_CONN}`);
         const db = mongoose.connection;
         db.on("error", console.error.bind(console, "connection error: "));
         db.once("open", function () {

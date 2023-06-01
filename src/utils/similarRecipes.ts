@@ -148,7 +148,7 @@ const  calculateDistance = (p1,p2) => {
 const getSimilarRecipes= async (recipeId) => {
 
     let recipe = await recipeModel1.findOne({id:recipeId})
-    var similarRecipes : [IRecipe] ;
+    var similarRecipes = [];
     // const allRecipes = recipes.recipeData.recipeLookup; //recipeData.recipeLookup;//
     let allRecipes = await recipeModel1.find();
     // console.log("all recipes count: ",allRecipes.length)
