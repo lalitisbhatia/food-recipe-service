@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // const recipes = require("./recipes");
 const ingrsToIgnore = ['Table salt'];
 const recipeModel1 = require("../interfaces/models");
-// const IRecipe = require("../interfaces/Recipe")
 const tagsWeight = 0.3;
 const ingrWeight = 1;
 const pointsWeight = 0.3;
@@ -38,10 +37,10 @@ const getDimensions = (recipe) => {
     // console.log(recipe);
     // console.log(recipe.id);
     // console.log(recipe.ingredients);
-    recipe.ingredients.forEach(element => {
+    recipe.ingredients.forEach((element) => {
         dimensions.push({ "type": "ingredient", "dimName": element.ingredientName });
     });
-    recipe.tags.forEach(element => {
+    recipe.tags.forEach((element) => {
         dimensions.push({ "type": "tag", "dimName": element });
     });
     dimensions.push({ "type": "points", "value": recipe.maxPointsPrecise });
@@ -141,15 +140,15 @@ const getSimilarRecipes = (recipeId) => __awaiter(void 0, void 0, void 0, functi
     // console.log("input recipe : ",inputRecipe);
     // console.log("Inside helper - recipe count: ",Object.keys(recipeData.recipeLookup).length)
     // let recipeNames = Object.keys(recipes.recipeData.recipeLookup)
-    let recipeNames = allRecipes.map(rec => { return { name: rec.name, id: rec.id, images: rec.images, maxPointsPrecise: rec.maxPointsPrecise }; });
+    let recipeNames = allRecipes.map((rec) => { return { name: rec.name, id: rec.id, images: rec.images, maxPointsPrecise: rec.maxPointsPrecise }; });
     // console.log("all recipe names",recipeNames)
     // console.log("recipe name: ", recipe)
-    recipeNames.forEach(element => {
+    allRecipes.forEach((element) => {
         let similarity = 0;
         let distance = 0;
         let nameDistance = getLevenshteinDistance(element.name, recipe.name);
         if (element.name !== recipe.name) {
-            distance = getEuclideanDistance(recipe, allRecipes.find(rec => rec.name === element.name));
+            distance = getEuclideanDistance(recipe, allRecipes.find((rec) => rec.name === element.name));
         }
         similarity = 1 / (distance + 1);
         if (similarity !== 1) {

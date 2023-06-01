@@ -7,9 +7,7 @@ const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
 const mongoose_1 = __importDefault(require("mongoose"));
-require("dotenv").config();
-const env = process.env.NODE_ENV;
-let DB_CONN = env === "dev" ? process.env.FR_DB_CONNECTION_LOCAL : process.env.FR_DB_CONNECTION;
+const envHelper_1 = require("./utils/envHelper");
 class App {
     constructor(controllers, port) {
         this.initializeMiddlewares = () => {
@@ -17,7 +15,7 @@ class App {
             this.app.use((0, cors_1.default)());
         };
         this.initializeDBConnection = () => {
-            mongoose_1.default.connect(`${DB_CONN}`);
+            mongoose_1.default.connect(`${(0, envHelper_1.getDBCONN)()}`);
             const db = mongoose_1.default.connection;
             db.on("error", console.error.bind(console, "connection error: "));
             db.once("open", function () {

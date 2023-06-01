@@ -2,17 +2,14 @@ import App from './app'
 import FoodController from './controllers/recipes';
 import RecipeController from './controllers/recipes';
 import 'dotenv/config';
-// console.log("*********  process.env *********")
-// console.log(process.env.NODE_ENV) 
-// console.log("*********  process.env *********")
-const env = process.env.NODE_ENV
-let PORT = env==="dev"?process.env.FR_SVC_PORT_LOCAL : process.env.FR_SVC_PORT_CONT
+import { getPORT } from './utils/envHelper'; "./utils/envHelper"
+
 
 const app:App = new App(
     [
         new RecipeController()
     ], 
-    PORT
+    getPORT()
     )
 
 app.listen(); 
