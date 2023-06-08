@@ -3,6 +3,7 @@ import bodyParser  from "body-parser";
 import cors  from 'cors';
 import mongoose from "mongoose";
 import { getDBCONN } from "./utils/envHelper";
+const compression = require('compression');
 
 class App {
     public app: express.Application;
@@ -19,6 +20,7 @@ class App {
     private initializeMiddlewares= ()=>{
         this.app.use(bodyParser.json())
         this.app.use(cors())
+        this.app.use(compression());
     }
     private initializeDBConnection = () => {
         mongoose.connect(`${getDBCONN()}`);

@@ -1,19 +1,24 @@
 import express, {Request,Response} from 'express';
-const recipeData  =  require("../data/recipeData_basic_obj")
+
+// const recipeData  =  require("../data/recipeData_basic_obj")
 const { get } = require("http")
 import recipesArray from "../data/recipeData_full"
 const recipeModel = require("../interfaces/models");
-const  generateTrie  = require('../utils/generateTrie');
+// import {generateTrie,search,TrieNode,Options} from "../utils/generateTrie" 
+import {generateTrie,search,TrieNode,Options} from "fast-trie-search"
 const similarRecipes= require('../utils/similarRecipes')
+
+import foodsArray from "../data/foods"
 
 class RecipesController {
     public path = '/recipes';
     public router = express.Router();
-    private trie  = {};
+    private trie = new TrieNode();
+    private foodTrie = {}
 
     constructor() {
         this.initializeRoutes();
-        this.initializeTrie()
+        this.initializeRecipeTrie();
     }
 
     private initializeRoutes() {
@@ -22,13 +27,50 @@ class RecipesController {
         this.router.get(`${this.path}/similar/:id`, this.getSimilarRecipes);
         this.router.get(`${this.path}/:id`, this.getRecipe);
         this.router.get(`${this.path}/utils/trie`, this.getRecipeTrie);
+        this.router.get(`${this.path}/utils/search`, this.searchRecipeTrie); 
+        
         // this.router.post(`${this.path}`, this.createRecipe)
     }
 
-    private async initializeTrie() {
-        this.trie = await generateTrie.generateTrie();
+    private async initializeRecipeTrie() {
+        this.trie = await this.generateRecipeTrie();
         const byteSize = (str:any) => new Blob([str]).size;
-        console.log(`Byte size of the Trie = ${byteSize(JSON.stringify(this.trie))} `)
+        console.log(`Byte size of the Recipe Trie = ${byteSize(JSON.stringify(this.trie))} `)
+    }
+
+
+
+    private generateRecipeTrie = async () => {
+        console.log("CALLING generateTrie!")
+        let recipesArray = await recipeModel.find()
+    
+        recipesArray.map((element: any) => {        
+            const img ={SMALL:{url:element.images.SMALL.url}}
+            return element.images = img
+        })
+        let options: Options ={
+            outputProps : ["name","id","maxPointsPrecise","images"],
+            addKey:true,
+            splitRegex:"/[ ]/",
+            excludeNodes:["and","the","of","with","without","in","on","&","at","or","type","added","side","form","pre","unprepared","uncooked","solid","liquids","mix","cooked","raw","fresh","store"]
+        }
+        return generateTrie(recipesArray,"name",options)
+    }
+
+    private generateFoodTrie = async () => {
+        console.log("CALLING generateFoodTrie!")
+        // let recipesArray = await recipeModel.find()
+    
+        // foodsArray.map((element: any) => {        
+        //     const img ={SMALL:{url:element.images.SMALL.url}}
+        //     return element.images = img
+        // })
+        let options = {
+            outputProps : "name",
+            addKey:true,
+            splitRegex:"/[ -]/"
+        }
+        return generateTrie(foodsArray,options)
     }
 
     private  handleSend (data:any,res:Response) {
@@ -88,9 +130,11 @@ class RecipesController {
         this.handleSend(similar_recipes,res)
     }
 
-    private createRecipe = (req:Request,res:Response) => {
-        
-    }
+    private searchRecipeTrie =async ( req:Request, res:Response) => {
+        const searchTerm = `${req.query.target}`
+        console.log(searchTerm)
+        res.status(200).json(search(searchTerm,0,this.trie))
+    }    
 }
 
 export default RecipesController
