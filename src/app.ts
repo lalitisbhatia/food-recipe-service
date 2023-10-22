@@ -23,6 +23,7 @@ class App {
         this.app.use(compression());
     }
     private initializeDBConnection = () => {
+        
         mongoose.connect(`${getDBCONN()}`);
         const db = mongoose.connection;
         db.on("error", console.error.bind(console, "connection error: "));

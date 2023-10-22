@@ -38,7 +38,7 @@ class FoodsController {
             res.status(200).json((0, fast_trie_search_1.search)(searchTerm, 0, this.foodTrie));
         });
         this.initializeRoutes();
-        this.initializeFoodTrie();
+        // this.initializeFoodTrie()
     }
     initializeRoutes() {
         this.router.get(`${this.path}/utils/trie`, this.getFoodTrie);

@@ -11,7 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 // const recipes = require("./recipes");
 const ingrsToIgnore = ['Table salt'];
-const recipeModel1 = require("../interfaces/models");
+const models = require("../interfaces/models");
+const recipeModel = models.recipeModel;
 const tagsWeight = 0.3;
 const ingrWeight = 1;
 const pointsWeight = 0.3;
@@ -130,11 +131,12 @@ const calculateDistance = (p1, p2) => {
 };
 // const createDimensions = (recipe) => {
 // }
-const getSimilarRecipes = (recipeId) => __awaiter(void 0, void 0, void 0, function* () {
-    let recipe = yield recipeModel1.findOne({ id: recipeId });
+const getSimilarRecipes = (recipeId, count) => __awaiter(void 0, void 0, void 0, function* () {
+    let ct = count || 10;
+    let recipe = yield recipeModel.findOne({ id: recipeId });
     var similarRecipes = [];
     // const allRecipes = recipes.recipeData.recipeLookup; //recipeData.recipeLookup;//
-    let allRecipes = yield recipeModel1.find();
+    let allRecipes = yield recipeModel.find();
     // console.log("all recipes count: ",allRecipes.length)
     // const inputRecipe = allRecipes.find( element => element.name===recipe.name)
     // console.log("input recipe : ",inputRecipe);
@@ -157,7 +159,7 @@ const getSimilarRecipes = (recipeId) => __awaiter(void 0, void 0, void 0, functi
         // console.log(`recipe data inside loop ${recipeData.recipeLookup[element]}`)
     });
     similarRecipes.sort((a, b) => b.similarityScore - a.similarityScore);
-    return similarRecipes.slice(0, 10);
+    return similarRecipes.slice(0, ct);
 });
 const getLevenshteinDistance = (a, b) => {
     if (a.length == 0)

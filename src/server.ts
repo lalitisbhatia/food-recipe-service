@@ -1,14 +1,14 @@
 import App from './app'
-import FoodController from './controllers/foods';
-import RecipeController from './controllers/recipes';
+import SongsController from './controllers/songs';
+
+// import CitiesController from "./controllers/cities"
 import 'dotenv/config';
-import { getPORT } from './utils/envHelper'; "./utils/envHelper"
+import { getPORT } from './utils/envHelper';
 
-
+console.log(getPORT())
 const app:App = new App(
     [
-        new RecipeController(),
-        new FoodController()
+        new SongsController()
     ], 
     getPORT()
     )

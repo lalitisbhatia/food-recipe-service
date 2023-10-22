@@ -1,5 +1,5 @@
 {
-  "name": "food-recipe-service",
+  "name": "hindi-songs-service",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -8,15 +8,17 @@
     "start": "node server.js",
     "dev": "concurrently  \"npx tsc --watch\" \"env NODE_ENV=dev  nodemon -q public/server.js\"",
     "dev1": "concurrently  \"npx tsc --watch\" \"nodemon -q public/server.js\"",
-    "docker:build": "docker build . -t fr-service && docker rm -f fr-service && docker run -d -it --env-file=.env -p 3300:3300 --name fr-service fr-service && docker network connect local-network fr-service",
+    "docker:build": "docker build . -t hs-service && docker rm -f hs-service && docker run -d -it --env-file=.env -p 2200:2200 --name hs-service hs-service && docker network connect hs-network hs-service",
     "test": "jest"
   },
   "repository": {
     "type": "git",
-    "url": "food-recipe-service"
+    "url": "hindi-songs-service"
   },
   "keywords": [
-    "recipes",
+    "songs",
+    "hindi",
+    "bollywood",
     "search",
     "trie",
     "typescript",
@@ -36,8 +38,10 @@
     "cors": "^2.8.5",
     "dotenv": "^16.1.3",
     "express": "^4.18.2",
-    "fast-trie-search": "^1.1.2",
+    "fast-trie-search": "^1.1.4",
+    "langchain": "^0.0.118",
     "mongoose": "^7.2.0",
+    "mongoose-paginate-v2": "^1.7.31",
     "nodemon": "^2.0.22",
     "regex-parser": "^2.2.11",
     "typescript": "^5.0.4"
