@@ -4,8 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = __importDefault(require("./app"));
-const recipes_1 = __importDefault(require("./controllers/recipes"));
+const songs_1 = __importDefault(require("./controllers/songs"));
+// import CitiesController from "./controllers/cities"
+require("dotenv/config");
+const envHelper_1 = require("./utils/envHelper");
+console.log((0, envHelper_1.getPORT)());
 const app = new app_1.default([
-    new recipes_1.default()
-], 3300);
+    new songs_1.default()
+], (0, envHelper_1.getPORT)());
 app.listen();

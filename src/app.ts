@@ -2,10 +2,8 @@ import express , { Application,Request,Response,Router } from "express";
 import bodyParser  from "body-parser";
 import cors  from 'cors';
 import mongoose from "mongoose";
-// require("dotenv").config(); 
-
-
-
+import { getDBCONN } from "./utils/envHelper";
+const compression = require('compression');
 
 class App {
     public app: express.Application;
@@ -16,16 +14,17 @@ class App {
         this.port = port;
         this.initializeMiddlewares();
         this.initializeDBConnection()
-        this.initializeControllers(controllers)
-        
+        this.initializeControllers(controllers)        
     }
 
     private initializeMiddlewares= ()=>{
         this.app.use(bodyParser.json())
         this.app.use(cors())
+        this.app.use(compression());
     }
     private initializeDBConnection = () => {
-        mongoose.connect(`${process.env.FR_DB_CONNECTION}`);
+        
+        mongoose.connect(`${getDBCONN()}`);
         const db = mongoose.connection;
         db.on("error", console.error.bind(console, "connection error: "));
         db.once("open", function () {
@@ -38,13 +37,11 @@ class App {
         })
     })
 
-
     public listen = () =>{
         this.app.listen(this.port,()=> {
             console.log(`App listening on port ${this.port}`)
         })
     }
+}
 
-   }
-
-   export default App
+export default App

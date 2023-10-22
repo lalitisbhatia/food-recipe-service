@@ -5,7 +5,7 @@ RUN rm -rf public/
 COPY package.json package-lock.json .
 RUN npm install
 COPY public/ .
-EXPOSE 5000
+EXPOSE 2000
 CMD [ "npm", "start"]
 
 #docker build . -t team-management

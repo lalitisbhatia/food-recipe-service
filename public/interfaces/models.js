@@ -4,6 +4,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
+const mongoose_paginate_v2_1 = __importDefault(require("mongoose-paginate-v2"));
+const TagSchema = new mongoose_1.default.Schema({
+    "id": {
+        "type": "Number"
+    },
+    "tag": {
+        "type": "String"
+    }
+});
+const Tag = mongoose_1.default.model("Tag", TagSchema);
 const RecipeSchema = new mongoose_1.default.Schema({
     "id": {
         "type": "Number"
@@ -22,6 +32,11 @@ const RecipeSchema = new mongoose_1.default.Schema({
     "tags": {
         "type": [
             "String"
+        ]
+    },
+    "tagIDs": {
+        "type": [
+            { type: mongoose_1.default.Schema.Types.ObjectId, ref: 'Tag' }
         ]
     },
     "difficultyLevel": {
@@ -141,5 +156,20 @@ const RecipeSchema = new mongoose_1.default.Schema({
     }
 });
 // export default mongoose.model<IRecipe>('Recipe', RecipeSchema);
+RecipeSchema.plugin(mongoose_paginate_v2_1.default);
 const Recipe = mongoose_1.default.model("Recipe", RecipeSchema);
-module.exports = Recipe;
+// BandSchema.virtual('numMembers', {
+//   ref: 'Person', // The model to use
+//   localField: 'name', // Find people where `localField`
+//   foreignField: 'band', // is equal to `foreignField`
+//   count: true // And only get the number of docs
+// });
+// // Later
+// const doc = await Band.findOne({ name: 'Motley Crue' }).
+//   populate('numMembers');
+module.exports = {
+    recipeModel: Recipe,
+    tagModel: Tag
+};
+// module.exports = Tag;
+// export {Recipe as recipeModel, Tag as tagModel}
